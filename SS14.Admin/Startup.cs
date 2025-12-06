@@ -104,16 +104,17 @@ namespace SS14.Admin
                 // Try to parse as CIDR notation first (e.g., 192.168.1.0/24)
                 if (IPHelper.TryParseIpOrCidr(entry, out var parsed))
                 {
-                    if (parsed.Item2.HasValue)
+                    var (ipAddress, prefixLength) = parsed;
+                    if (prefixLength.HasValue)
                     {
                         // It's a CIDR subnet, add to KnownNetworks
-                        var network = new Microsoft.AspNetCore.HttpOverrides.IPNetwork(parsed.Item1, parsed.Item2.Value);
+                        var network = new Microsoft.AspNetCore.HttpOverrides.IPNetwork(ipAddress, prefixLength.Value);
                         forwardedHeadersOptions.KnownNetworks.Add(network);
                     }
                     else
                     {
                         // It's a single IP address, add to KnownProxies
-                        forwardedHeadersOptions.KnownProxies.Add(parsed.Item1);
+                        forwardedHeadersOptions.KnownProxies.Add(ipAddress);
                     }
                 }
                 else
