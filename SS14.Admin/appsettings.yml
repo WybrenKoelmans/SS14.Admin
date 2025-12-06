@@ -18,6 +18,8 @@ Serilog:
 
 ForwardProxies:
   - 127.0.0.1
+  # Subnets in CIDR notation are also supported, e.g.:
+  # - 192.168.1.0/24
 
 AuthServer: "https://central.spacestation14.io/auth"
 AllowedHosts: "*"
